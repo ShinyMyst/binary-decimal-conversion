@@ -27,12 +27,7 @@ class App:
         App.root = input_root
         App.root.geometry("350x200")
         App.root.title("Binary-Decimal Converter")
-        
         self.prepare_widgets()
-
-        #convert_decimal_button = tk.Button(App.root, text="Convert_Decimal", command= lambda:self.print_conversion())
-
-
 
 
     def prepare_widgets(self):
@@ -40,24 +35,31 @@ class App:
         # Create Widgets
         box_label = tk.Label(App.root, text="Input number:")
         self.input_box = tk.Entry(App.root, font=(50))  
-        output_label = tk.Label(root, text="")
+        self.output_label = tk.Label(root, text="", font=(50))
         button_frame = tk.Frame(root)
-        binary_button = tk.Button(button_frame, text="Binary", command= lambda:self.print_conversion())
-        decimal_button = tk.Button(button_frame, text="Decimal", command= lambda:self.print_conversion())    
+        binary_button = tk.Button(button_frame, text="Binary", command= lambda:self.convert_input("binary"))
+        decimal_button = tk.Button(button_frame, text="Decimal", command= lambda:self.convert_input("decimal"))    
         
         # Pack Widgets
-        output_label.pack()
         box_label.pack()
         self.input_box.pack()
         button_frame.pack(pady=10)
         binary_button.pack(side="left", padx=10)
         decimal_button.pack(side="left", padx=10)
+        self.output_label.pack()
 
 
-    def print_conversion(self):
+    def convert_input(self, type):
         value = self.input_box.get()
-        value = convert_decimal(int(value))
-        print(value)
+        if value.isdigit():
+            if type == "binary":
+                output = convert_binary(int(value))
+            elif type == "decimal":
+                output = convert_decimal(int(value))
+        else:
+            output = "Error: Invalid Input"
+        
+        self.output_label.config(text=output)
         
 
 
