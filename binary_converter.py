@@ -1,4 +1,5 @@
-import tkinter as tk 
+import tkinter as tk
+
 
 def convert_binary(binary):
     """Converts a single binary string to decimal"""
@@ -10,7 +11,9 @@ def convert_binary(binary):
         pos += 1
     return output
 
+
 def convert_decimal(decimal):
+    """Converts decimal value to binary"""
     output = ''
     while decimal != 0:
         output += str(decimal % 2)
@@ -18,28 +21,32 @@ def convert_decimal(decimal):
     output = output[::-1]
     return output
 
-convert_decimal(172)
 
 class App:
     root = None
-    
+
     def __init__(self, input_root):
         App.root = input_root
         App.root.geometry("350x200")
         App.root.title("Binary-Decimal Converter")
         self.prepare_widgets()
 
-
     def prepare_widgets(self):
         """Creates and packs all widgets for app."""
         # Create Widgets
         box_label = tk.Label(App.root, text="Input number:")
-        self.input_box = tk.Entry(App.root, font=(50))  
+        self.input_box = tk.Entry(App.root, font=(50))
         self.output_label = tk.Label(root, text="", font=(50))
         button_frame = tk.Frame(root)
-        binary_button = tk.Button(button_frame, text="Binary", command= lambda:self.convert_input("binary"))
-        decimal_button = tk.Button(button_frame, text="Decimal", command= lambda:self.convert_input("decimal"))    
-        
+        binary_button = tk.Button(button_frame,
+                                  text="Binary",
+                                  command=lambda:
+                                      self.convert_input("binary"))
+        decimal_button = tk.Button(button_frame,
+                                   text="Decimal",
+                                   command=lambda:
+                                       self.convert_input("decimal"))
+
         # Pack Widgets
         box_label.pack()
         self.input_box.pack()
@@ -48,19 +55,24 @@ class App:
         decimal_button.pack(side="left", padx=10)
         self.output_label.pack()
 
-
     def convert_input(self, type):
+        """Calls the specified conversion command to find output value."""
         value = self.input_box.get()
-        if value.isdigit():
-            if type == "binary":
+        output = "Error: Invalid Input"
+
+        if not value.isdigit():
+            output = "Error: Not a digit"
+
+        elif type == "decimal":
+            output = convert_decimal(int(value))
+
+        elif type == "binary":
+            if set(str(value)) == {'0', '1'}:
                 output = convert_binary(int(value))
-            elif type == "decimal":
-                output = convert_decimal(int(value))
-        else:
-            output = "Error: Invalid Input"
-        
+            else:
+                output = "Error: Binary contains non 0's or 1's"
+
         self.output_label.config(text=output)
-        
 
 
 if __name__ == "__main__":
