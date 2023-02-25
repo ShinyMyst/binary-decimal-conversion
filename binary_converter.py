@@ -9,7 +9,6 @@ def convert_binary(binary):
         if digit == '1':
             output += 2**pos
         pos += 1
-    return output
 
 
 def convert_decimal(decimal):
