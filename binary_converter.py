@@ -1,11 +1,4 @@
 import tkinter as tk 
-import os
-os.system('Xvfb :1 -screen 0 1600x1200x16  &')    # create virtual display with size 1600x1200 and 16 bit color. Color can be changed to 24 or 8
-os.environ['DISPLAY']=':1.0'    # tell X clients to use our virtual DISPLAY :1.0.
-
-if os.environ.get('DISPLAY','') == '':
-    print('no display found. Using :0.0')
-    os.environ.__setitem__('DISPLAY', ':0.0')
 
 def convert_binary(binary):
     """Converts a single binary string to decimal"""
@@ -15,7 +8,6 @@ def convert_binary(binary):
         if digit == '1':
             output += 2**pos
         pos += 1
-    print(output)
     return output
 
 def convert_decimal(decimal):
@@ -24,7 +16,6 @@ def convert_decimal(decimal):
         output += str(decimal % 2)
         decimal //= 2
     output = output[::-1]
-    print(output)
     return output
 
 convert_decimal(172)
@@ -36,12 +27,32 @@ class App:
         App.root = input_root
         App.root.geometry("350x200")
         App.root.title("Binary-Decimal Converter")
+        
+        self.prepare_widgets()
+
+        #convert_decimal_button = tk.Button(App.root, text="Convert_Decimal", command= lambda:self.print_conversion())
+
+
+
+
+    def prepare_widgets(self):
+        """Creates and packs all widgets for app."""
+        # Create Widgets
         box_label = tk.Label(App.root, text="Input number:")
-        self.input_box = tk.Entry(App.root, font=(50))
-        convert_decimal_button = tk.Button(App.root, text="Convert_Decimal", command= lambda:self.print_conversion())
+        self.input_box = tk.Entry(App.root, font=(50))  
+        output_label = tk.Label(root, text="")
+        button_frame = tk.Frame(root)
+        binary_button = tk.Button(button_frame, text="Binary", command= lambda:self.print_conversion())
+        decimal_button = tk.Button(button_frame, text="Decimal", command= lambda:self.print_conversion())    
+        
+        # Pack Widgets
+        output_label.pack()
         box_label.pack()
         self.input_box.pack()
-        convert_decimal_button.pack()
+        button_frame.pack(pady=10)
+        binary_button.pack(side="left", padx=10)
+        decimal_button.pack(side="left", padx=10)
+
 
     def print_conversion(self):
         value = self.input_box.get()
